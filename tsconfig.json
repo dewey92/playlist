@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "jsx": "react",
+    "strictNullChecks": true,
+    "lib": ["esnext", "dom"]
+  }
+}
