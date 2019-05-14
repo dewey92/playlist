@@ -20,7 +20,12 @@ const App: React.FC<WithStyles<typeof styles>> = ({ classes }) => {
   // Effects run when switching items/videos
   React.useEffect(() => {
     if (!videoElem.current) return;
-    videoElem.current.play();
+
+    if (state.currentlyPlaying !== null) {
+      videoElem.current.play();
+    } else {
+      videoElem.current.load();
+    }
   }, [state.currentlyPlaying]);
 
   // Our "reducer side-effects" are handled here
@@ -28,6 +33,7 @@ const App: React.FC<WithStyles<typeof styles>> = ({ classes }) => {
     if (!videoElem.current) return;
     if (effects === 'REPLAY') {
       videoElem.current.currentTime = 0;
+      videoElem.current.play(); // force play
     }
     return () => dispatch({ type: 'RESET_EFFECT' });
   }, [effects]);

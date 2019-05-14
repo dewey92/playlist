@@ -43,14 +43,22 @@ export const playlistReducer: React.Reducer<StateEffects, Actions> = ([state, ef
   }
 
   if (action.type === 'PLAY_NEXT_VIDEO') {
+    // We don't play the next video when playlist is empty. It's just impossible.
+    if (!state.playlist.length) return [{ ...state, currentlyPlaying: null }];
+
     const currIndex = state.playlist.findIndex(p => p.id === state.currentlyPlaying);
     // Play next video when not in bottom, otheriwse start from the top again
     const nextIndex = currIndex === state.playlist.length - 1 ? 0 : currIndex + 1;
+    const nextItemId = state.playlist[nextIndex].id;
+
+    if (state.playlist.length === 1) {
+      return playlistReducer([state], { type: 'PLAY', itemId: nextItemId });
+    }
 
     return [
       {
         ...state,
-        currentlyPlaying: state.playlist[nextIndex].id,
+        currentlyPlaying: nextItemId,
       },
     ];
   }

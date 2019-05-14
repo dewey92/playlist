@@ -29,7 +29,13 @@ const AddToPlaylistForm: React.FC<Props & WithStyles<typeof styles>> = props => 
     <form onSubmit={onSubmit} className={props.classes.form}>
       <TextField label="Title" required value={title} onChange={e => setTitle(e.target.value)} />
       <TextField label="Artist" required value={artist} onChange={e => setArtist(e.target.value)} />
-      <TextField label="URL" required value={url} onChange={e => setUrl(e.target.value)} />
+      <TextField
+        label="URL"
+        type="url"
+        required
+        value={url}
+        onChange={e => setUrl(e.target.value)}
+      />
       <Button variant="contained" color="secondary" type="submit">
         Add to Playlist
       </Button>

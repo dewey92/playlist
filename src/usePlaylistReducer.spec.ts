@@ -50,5 +50,23 @@ describe('Playlist reducer', () => {
       const expectedStore = playlistReducer(nextStore_, { type: 'PLAY_NEXT_VIDEO' });
       expect(expectedStore[0].currentlyPlaying).toBe('id1');
     });
+
+    it('repeats when having only 1 video', () => {
+      const expectedStore = playlistReducer(
+        [{ playlist: dummyPlaylist.slice(0, 1), currentlyPlaying: 'id1' }],
+        {
+          type: 'PLAY_NEXT_VIDEO',
+        }
+      );
+      expect(expectedStore[0].currentlyPlaying).toBe('id1');
+      expect(expectedStore[1]).toBe('REPLAY');
+    });
+
+    it("doesn't do anything when playlist is empty", () => {
+      const expectedStore = playlistReducer([{ playlist: [], currentlyPlaying: 'id1' }], {
+        type: 'PLAY_NEXT_VIDEO',
+      });
+      expect(expectedStore[0]).toEqual({ playlist: [], currentlyPlaying: null });
+    });
   });
 });
