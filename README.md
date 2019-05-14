@@ -1,4 +1,7 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/a1f542a5-c863-469f-bd02-5a4266254d61/deploy-status)](https://app.netlify.com/sites/elastic-keller-e436c3/deploys)
+
 # Playlist
+DEMO: https://dewey-playlist.netlify.com/
 
 ## Run the app
 
