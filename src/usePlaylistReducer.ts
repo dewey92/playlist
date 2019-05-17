@@ -17,7 +17,7 @@ type Actions =
   | { type: 'REMOVE_FROM_PLAYLIST'; itemId: ItemId } // the item id
   | { type: 'RESET_EFFECT' };
 
-export const initialValue: StateEffects = [
+const initialValue: StateEffects = [
   {
     playlist: [],
     currentlyPlaying: null,
@@ -94,3 +94,25 @@ export const playlistReducer: React.Reducer<StateEffects, Actions> = ([state, ef
 
   return [state, effects];
 };
+
+const usePlaylistReducer = () => {
+  const [stateAndEffects, dispatch] = React.useReducer(playlistReducer, initialValue);
+  const play = (itemId: ItemId) => dispatch({ type: 'PLAY', itemId });
+  const playNext = () => dispatch({ type: 'PLAY_NEXT_VIDEO' });
+  const addToPlaylist = (payload: PlaylistItem) => dispatch({ type: 'ADD_TO_PLAYLIST', payload });
+  const removeFromPlaylist = (itemId: ItemId) => dispatch({ type: 'REMOVE_FROM_PLAYLIST', itemId });
+  const resetEffect = () => dispatch({ type: 'RESET_EFFECT' });
+
+  return [
+    stateAndEffects,
+    {
+      play,
+      playNext,
+      addToPlaylist,
+      removeFromPlaylist,
+      resetEffect,
+    },
+  ] as const;
+};
+
+export default usePlaylistReducer;

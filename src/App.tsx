@@ -11,10 +11,10 @@ import {
 } from '@material-ui/core';
 import AddToPlaylistForm from './AddToPlaylistForm';
 import Playlist from './Playlist';
-import { playlistReducer, initialValue } from './usePlaylistReducer';
+import usePlaylistReducer from './usePlaylistReducer';
 
 const App: React.FC<WithStyles<typeof styles>> = ({ classes }) => {
-  const [[state, effects], dispatch] = React.useReducer(playlistReducer, initialValue);
+  const [[state, effects], actions] = usePlaylistReducer();
   const videoElem = React.useRef<HTMLVideoElement | null>(null);
 
   // Effects run when switching items/videos
@@ -35,7 +35,7 @@ const App: React.FC<WithStyles<typeof styles>> = ({ classes }) => {
       videoElem.current.currentTime = 0;
       videoElem.current.play(); // force play
     }
-    return () => dispatch({ type: 'RESET_EFFECT' });
+    return actions.resetEffect;
   }, [effects]);
 
   const currentPlayingUrl = state.playlist.find(i => i.id === state.currentlyPlaying);
@@ -60,21 +60,19 @@ const App: React.FC<WithStyles<typeof styles>> = ({ classes }) => {
               controls
               className={classes.video}
               width="100%"
-              onEnded={() => dispatch({ type: 'PLAY_NEXT_VIDEO' })}
+              onEnded={actions.playNext}
             />
           </Grid>
           <Grid item>
-            <AddToPlaylistForm
-              onSubmit={payload => dispatch({ type: 'ADD_TO_PLAYLIST', payload })}
-            />
+            <AddToPlaylistForm onSubmit={actions.addToPlaylist} />
           </Grid>
         </Grid>
         <Grid item sm={4} xs={12}>
           <Playlist
             items={state.playlist}
             currentlyPlaying={state.currentlyPlaying}
-            onPlay={itemId => dispatch({ type: 'PLAY', itemId })}
-            onRemove={itemId => dispatch({ type: 'REMOVE_FROM_PLAYLIST', itemId })}
+            onPlay={actions.play}
+            onRemove={actions.removeFromPlaylist}
           />
         </Grid>
       </Grid>
